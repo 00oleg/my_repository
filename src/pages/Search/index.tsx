@@ -1,6 +1,6 @@
 import { Component } from "react";
-import SearchTop from "./Top";
-import SearchResults from "./Result";
+import SearchTop from "../../components/Top";
+import SearchResults from "../../components/Result";
 
 interface SearchPageProps {
   params: object;
@@ -35,27 +35,29 @@ class SearchPage extends Component<SearchPageProps, SearchPageState> {
     const clearSearchText = newSearchText.trim();
     localStorage.setItem('searchText', clearSearchText);
 
-    fetch(`https://stapi.co/api/v1/rest/animal/search?name=${clearSearchText}`, 
-    {
-      method: "POST"
+    fetch(
+      `https://stapi.co/api/v1/rest/animal/search?name=${clearSearchText}`, 
+      {
+        method: "POST"
+      }
+    )
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error('Response was not ok');
+      }
+      return response.json();
     })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        return response.json();
-      })
-      .then(({animals}) => {
-        this.setState({
-          searchText: clearSearchText,
-          results: animals,
-          error: null,
-        });
-      })
-      .catch((error) => {
-        console.error(error);
-        this.setState({ error });
+    .then(({animals}) => {
+      this.setState({
+        searchText: clearSearchText,
+        results: animals,
+        error: null,
       });
+    })
+    .catch((error) => {
+      console.error(error);
+      this.setState({ error });
+    });
   }
 
   render() {
@@ -65,6 +67,7 @@ class SearchPage extends Component<SearchPageProps, SearchPageState> {
           searchText={this.state.searchText} 
           onSearch={this.handleSearch}
         />
+        {this.state.error && <div>Error: {this.state.error.message}</div>}
         <SearchResults results={this.state.results} />
       </>
     );
