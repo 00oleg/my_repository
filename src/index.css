@@ -61,7 +61,7 @@ button:focus-visible {
   background-color: #f66161;
 }
 
-input[type=text] {
+input[type='text'] {
   height: 40px;
   padding: 0 10px;
 }
@@ -94,7 +94,7 @@ input[type=text] {
 
 .search-result li {
   padding: 10px 0;
-  border-top: 1px solid #ddd; 
+  border-top: 1px solid #ddd;
 }
 
 .no-results {

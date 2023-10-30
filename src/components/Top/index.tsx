@@ -25,7 +25,7 @@ class SearchTop extends Component<SearchInputProps, SearchInputState> {
 
   render() {
     return (
-      <div className='search-form'>
+      <div className="search-form">
         <input
           type="text"
           value={this.state.searchText}
