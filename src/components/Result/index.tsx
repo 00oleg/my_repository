@@ -32,7 +32,6 @@ class SearchResults extends Component<SearchResultsProps, SearchResultState> {
     }
 
     const { loading, results } = this.props;
-    console.log(loading);
 
     if (loading) {
       return (
