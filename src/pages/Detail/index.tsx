@@ -95,6 +95,7 @@ const DetailPage = () => {
             <div>Loading...</div>
           ) : (
             <table>
+              <tbody>
               {
                 Object.keys(detail).map((el: string) => {
                   let val = detail[el as keyof DetailResult];
@@ -111,6 +112,7 @@ const DetailPage = () => {
                   )
                 })
               }
+              </tbody>
             </table>
           )
         }
