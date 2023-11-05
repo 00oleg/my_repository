@@ -1,6 +1,7 @@
 import { useState } from 'react';
-
+import { Link } from 'react-router-dom';
 interface SearchResultItem {
+  uid: string;
   name: string;
   earthAnimal: string;
 }
@@ -41,8 +42,10 @@ const SearchResults = ({ loading, results }: SearchResultsProps) => {
         <ul>
           {results.map((result, index) => (
             <li key={index}>
-              <strong>{result.name}</strong> -
-              <span>Earth Animal: {result.earthAnimal ? 'Yes' : 'No'}</span>
+              <Link to={`/${result.uid}?detail=${result.uid}`}>
+                <strong>{result.name}</strong> -
+                <span>Earth Animal: {result.earthAnimal ? 'Yes' : 'No'}</span>
+              </Link>
             </li>
           ))}
         </ul>
