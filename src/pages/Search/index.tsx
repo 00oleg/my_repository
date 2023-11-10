@@ -4,17 +4,11 @@ import SearchTop from '../../components/Top';
 import SearchResults from '../../components/Result';
 import PaginationResults from '../../components/Pagination';
 import { Outlet } from 'react-router-dom';
-
-interface SearchResult {
-  uid: string;
-  name: string;
-  earthAnimal: string;
-}
+import { useAppContext } from '../../utils/AppContext';
 
 const SearchPage = () => {
+  const { searchInput, results, updateResults } = useAppContext();
   const [firstLoader, setFirstLoader] = useState<boolean>(true);
-  const [searchText, setSearchText] = useState<string>(localStorage.getItem('searchText') || '');
-  const [results, setResults] = useState<SearchResult[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [searchParams, setSearchParams] = useSearchParams();
   const [pageNumber, setPageNumber] = useState<number>(Number(searchParams.get('page') || 1));
@@ -25,16 +19,8 @@ const SearchPage = () => {
     setSearchParams(param);
   }
 
-  const handleSearchText = (param: string) => {
-    setSearchText(param);
-  }
-
   const handleLoading = (param: boolean) => {
     setLoading(param);
-  }
-
-  const handleResults = (param: []) => {
-    setResults(param);
   }
 
   const handlePageNumber = (param: number) => {
@@ -49,14 +35,13 @@ const SearchPage = () => {
     setPerPage(param);
   }
   
-  const handleSearch = (newSearchText: string) => {
-    const clearSearchText = newSearchText.trim();
-    localStorage.setItem('searchText', clearSearchText);
-
+  const handleSearch = () => {
+    localStorage.setItem('searchText', searchInput);
+    
     handleLoading(true);
 
     fetch(
-      `https://stapi.co/api/v1/rest/animal/search?name=${clearSearchText}&pageNumber=${pageNumber-1}&pageSize=${perPage}`,
+      `https://stapi.co/api/v1/rest/animal/search?name=${searchInput}&pageNumber=${pageNumber-1}&pageSize=${perPage}`,
       {
         method: 'POST',
       }
@@ -70,7 +55,7 @@ const SearchPage = () => {
       })
       .then(({ animals, page }) => {
         handleTotalPages(page.totalPages);
-        handleResults(animals);
+        updateResults(animals);
         handleLoading(false);
       })
       .catch((error) => {
@@ -78,8 +63,17 @@ const SearchPage = () => {
         throw new Error(error);
       });
   };
+  
+  const handleSearchText = () => {
+    if (pageNumber !== 1) {
+      handlePageNumber(1);
+    } else {
+      handleSearch();
+    }
+  }
 
   useEffect(() => {
+
     if (pageNumber !== 1) {
       const updatedSearchParams = new URLSearchParams();
       updatedSearchParams.set('page', '1');
@@ -91,14 +85,14 @@ const SearchPage = () => {
         setFirstLoader(false);
       }
 
-      handleSearch(searchText);
+      handleSearch();
     }
-  }, [searchText, perPage]);
+  }, [perPage]);
 
   useEffect(() => {
 
     if (!firstLoader) {
-      handleSearch(searchText);
+      handleSearch();
     }
     
   }, [pageNumber]);
@@ -113,7 +107,7 @@ const SearchPage = () => {
   return (
     <div className='search-page'>
       <div className='search-page__left'>
-        <SearchTop searchText={searchText} onSearch={handleSearchText} />
+        <SearchTop onSearch={handleSearchText} />
         <SearchResults loading={loading} results={results} />
         {loading || !results.length ? (
           null

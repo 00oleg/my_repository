@@ -1,19 +1,19 @@
-import { useState } from "react";
+// import { useState } from "react";
+import { useAppContext } from "../../utils/AppContext";
 
 interface SearchInputProps {
-  searchText: string;
-  onSearch: (text: string, page: number) => void;
+  onSearch: (page: number) => void;
 }
 
-const SearchTop = ({ searchText, onSearch }: SearchInputProps) => {
-  const [searchInput, setSearchInput] = useState<string>(searchText);
+const SearchTop = ({ onSearch }: SearchInputProps) => {
+  const { searchInput, updateSearchValue } = useAppContext();
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchInput(event.target.value.trim());
+    updateSearchValue(event.target.value.trim());
   };
 
   const handleSearch = () => {
-    onSearch(searchInput, 1);
+    onSearch(1);
   }
 
   return (
