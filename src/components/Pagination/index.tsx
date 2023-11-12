@@ -25,6 +25,7 @@ const PaginationResults = ({
               key={el}
               className={`pagination-result__item${(pageNumber - 1) === el ? ' current' : ''}`}
               to={`?page=${el+1}`}
+              data-testid="pagination-result__item"
             >{el + 1}</Link>
           )
         })}

@@ -23,7 +23,7 @@ test('CardList component should render the correct number of cards', () => {
       ]}/>
     </MemoryRouter>
   );
-  const cards = getAllByTestId('search-result__item');
+  const cards = getAllByTestId('card-list__item');
   expect(cards.length).toBe(2);
 });
 
