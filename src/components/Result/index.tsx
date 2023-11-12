@@ -41,7 +41,10 @@ const SearchResults = ({ loading, results }: SearchResultsProps) => {
       {results.length ? (
         <ul>
           {results.map((result, index) => (
-            <li key={index}>
+            <li 
+              key={index}
+              data-testid="search-result__item"
+            >
               <Link to={`/${result.uid}?detail=${result.uid}`}>
                 <strong>{result.name}</strong> -
                 <span>Earth Animal: {result.earthAnimal ? 'Yes' : 'No'}</span>

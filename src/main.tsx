@@ -4,7 +4,7 @@ import ErrorBoundary from './components/ErrorBoundary';
 import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 import './index.css';
-import { AppProvider } from './utils/AppContext';
+import AppProvider from './utils/AppContext';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>

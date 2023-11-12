@@ -23,7 +23,7 @@ export const useAppContext = () => {
   return context;
 };
 
-export const AppProvider = ({ children }:PropsWithChildren) => {
+const AppProvider = ({ children }:PropsWithChildren) => {
   const [searchInput, setSearchInput] = useState<string>(localStorage.getItem('searchText') || '');
   const [results, setResults] = useState<SearchResult[]>([]);
 
@@ -41,3 +41,5 @@ export const AppProvider = ({ children }:PropsWithChildren) => {
     </AppContext.Provider>
   );
 };
+
+export default AppProvider;
